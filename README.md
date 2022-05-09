@@ -5,9 +5,9 @@
 <h3> Answering business question using SQL</h3>  
   
   
-  <hr>CREATE SCHEMA pizza_runner;</hr>
+  <h6>CREATE SCHEMA pizza_runner;</h6>
 
-<hr>use pizza_runner;</hr>
+<h6>use pizza_runner;</h6>
 CREATE TABLE runners (
   runner_id INTEGER,
   registration_date DATE
