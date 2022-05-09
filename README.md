@@ -121,183 +121,183 @@
 
   
   # Data Cleaning
-  CREATE TEMPORARY TABLE customer_order  
-  SELECT order_id, customer_id, pizza_id, 
-  CASE 
-    WHEN exclusions IS null OR exclusions LIKE 'null' THEN ' '
-    ELSE exclusions
-    END AS exclusions,
-  CASE 
-    WHEN extras IS NULL or extras LIKE 'null' THEN ' '
-    ELSE extras 
-    END AS extras, 
-  order_time
-#INTO customer_order -- create TEMP TABLE
-FROM customer_orders;
+  <h6>CREATE TEMPORARY TABLE customer_order  
+  <h6>SELECT order_id, customer_id, pizza_id, 
+  <h6>CASE 
+    <h6>WHEN exclusions IS null OR exclusions LIKE 'null' THEN ' '
+    <h6>ELSE exclusions
+   <h6> END AS exclusions,
+  <h6>CASE 
+   <h6> WHEN extras IS NULL or extras LIKE 'null' THEN ' '
+    <h6>ELSE extras 
+    <h6>END AS extras, 
+  <h6>order_time
+<h6>#INTO customer_order -- create TEMP TABLE
+<h6>FROM customer_orders;
 
 # Runners Order clean
-Create Temporary Table runner_order
-Select order_id, runner_id,
-Case
-  When pickup_time Is Null or pickup_time Like 'null' Then ' '
-  Else pickup_time
-  End As pickup_time,
-Case
-  When distance Like 'null' Then ' '
-  When distance Like '%km' Then Trim('km' from distance)
-  Else distance
-  End As distance,
-Case
-  When duration Like 'null' Then ' '
-  When duration Like '%mins' Then Trim('mins' from duration)
-  When duration Like '%minute' Then Trim('minute' from duration)
-  When duration Like '%minutes' Then Trim('minutes' from duration)
-  Else duration
-  End As duration,
-Case
-  When cancellation Is Null or cancellation Like 'null' Then ' '
-  Else cancellation
-  End As cancellation
-  From runner_orders;
+<h6>Create Temporary Table runner_order
+<h6>Select order_id, runner_id,
+<h6>Case
+  <h6>When pickup_time Is Null or pickup_time Like 'null' Then ' '
+  <h6>Else pickup_time
+  <h6>End As pickup_time,
+<h6>Case
+  <h6>When distance Like 'null' Then ' '
+  <h6>When distance Like '%km' Then Trim('km' from distance)
+  <h6>Else distance
+  <h6>End As distance,
+<h6>Case
+  <h6>When duration Like 'null' Then ' '
+  <h6>When duration Like '%mins' Then Trim('mins' from duration)
+  <h6>When duration Like '%minute' Then Trim('minute' from duration)
+  <h6>When duration Like '%minutes' Then Trim('minutes' from duration)
+  <h6>Else duration
+  <h6>End As duration,
+<h6>Case
+  <h6>When cancellation Is Null or cancellation Like 'null' Then ' '
+  <h6>Else cancellation
+  <h6>End As cancellation
+  <h6>From runner_orders;
   
   
   # Part A pizza Metrics
   # Ques 1 : How many pizzas were ordered?
-  Select Count(order_id) From customer_order;
+  <h6>Select Count(order_id) From customer_order;
   
   # Ques 2 : How many unique customer orders were made?
-  Select Count(Distinct(order_id)) From customer_order;
+ <h6> Select Count(Distinct(order_id)) From customer_order;
   
   # Ques 3 : How many successful orders were delivered by each runner?
-  Select runner_id, Count(runner_id) as total_orders From runner_order
-  Where duration  not in (' ')
-  Group By runner_id;
+  <h6>Select runner_id, Count(runner_id) as total_orders From runner_order
+  <h6>Where duration  not in (' ')
+  <h6>Group By runner_id;
   
   # Ques 4 : How many of each type of pizza was delivered?
-  Select p.pizza_name, Count(c.pizza_id) As total_order
-  From customer_order c
-  Join pizza_names p
-  On c.pizza_id = p.pizza_id
-  Join runner_order r
-  On r.order_id = c.order_id
-  Where r.distance != 0
-  Group By p.pizza_name
-  Order By 2 Desc;
+  <h6>Select p.pizza_name, Count(c.pizza_id) As total_order
+  <h6>From customer_order c
+  <h6>Join pizza_names p
+  <h6>On c.pizza_id = p.pizza_id
+  <h6>Join runner_order r
+  <h6>On r.order_id = c.order_id
+  <h6>Where r.distance != 0
+  <h6>Group By p.pizza_name
+  <h6>Order By 2 Desc;
   
   # Ques 5 : How many Vegetarian and Meatlovers were ordered by each customer?
-  Select c.customer_id, p.pizza_name, Count(c.pizza_id) As total_order
-  From customer_order c
-  Join pizza_names p
-  On c.pizza_id = p.pizza_id
-  Group By c.customer_id, p.pizza_name
-  Order By 3 Desc;
+  <h6>Select c.customer_id, p.pizza_name, Count(c.pizza_id) As total_order
+  <h6>From customer_order c
+  <h6>Join pizza_names p
+  <h6>On c.pizza_id = p.pizza_id
+  <h6>Group By c.customer_id, p.pizza_name
+  <h6>Order By 3 Desc;
   
  # Ques 6 : What was the maximum number of pizzas delivered in a single order?
- Select order_id, Count(pizza_id) max_order From customer_order
- Group By order_id
- Order By 2 Desc
- Limit 1;
+ <h6>Select order_id, Count(pizza_id) max_order From customer_order
+ <h6>Group By order_id
+ <h6>Order By 2 Desc
+ <h6>Limit 1;
  
  # Ques 7 : For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
- Select c.customer_id,
- Sum(Case
-	   When c.exclusions <> ' '  or c.extras <> ' ' Then 1
-       Else 0 End) As At_least_one_change,
-Sum(Case
-     When c.exclusions = ' '  And c.extras = ' ' Then 1
-     Else 0 End) As No_canges
-From customer_order c
-Join runner_order r
-On c.order_id = r.order_id
-Where r.distance != 0
-Group By c.customer_id;
+ <h6>Select c.customer_id,
+ <h6>Sum(Case
+	   <h6>When c.exclusions <> ' '  or c.extras <> ' ' Then 1
+       <h6>Else 0 End) As At_least_one_change,
+<h6>Sum(Case
+     <h6>When c.exclusions = ' '  And c.extras = ' ' Then 1
+     <h6>Else 0 End) As No_canges
+<h6>From customer_order c
+<h6>Join runner_order r
+<h6>On c.order_id = r.order_id
+<h6>Where r.distance != 0
+<h6>Group By c.customer_id;
 
 # Ques 8 : How many pizzas were delivered that had both exclusions and extras?
-Select Sum(Case
-              When exclusions Is Not Null And extras Is Not Null Then 1
-              Else 0 End) As delivred
-From customer_order c
-join runner_order r
-On c.order_id = r.order_id
-Where r.distance >= 1 And c.exclusions <> ' ' And c.extras <> ' ';
+<h6>Select Sum(Case
+              <h6>When exclusions Is Not Null And extras Is Not Null Then 1
+              <h6>Else 0 End) As delivred
+<h6>From customer_order c
+<h6>join runner_order r
+<h6>On c.order_id = r.order_id
+<h6>Where r.distance >= 1 And c.exclusions <> ' ' And c.extras <> ' ';
 
 # Ques 9 : What was the total volume of pizzas ordered for each hour of the day?
-Select extract(hour from order_time) as hour_of_day, Count(order_id) 
-From customer_order
-Group By extract(hour from order_time);
+<h6>Select extract(hour from order_time) as hour_of_day, Count(order_id) 
+<h6>From customer_order
+<h6>Group By extract(hour from order_time);
 
 # Part B. Runner and Customer Experience
 
 # Ques 1 : How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
-Select extract(week from registration_date) As Week_no, Count(runner_id) From runners
-Group By extract(week from registration_date);
+<h6>Select extract(week from registration_date) As Week_no, Count(runner_id) From runners
+<h6>Group By extract(week from registration_date);
 
 # Ques 2 : What was the average distance travelled for each customer?
-Select c.customer_id, Avg(r.distance) avg_dist From customer_order c
-Join runner_order r
-On c.order_id = r.order_id
-Group By c.customer_id;
+<h6>Select c.customer_id, Avg(r.distance) avg_dist From customer_order c
+<h6>Join runner_order r
+<h6>On c.order_id = r.order_id
+<h6>Group By c.customer_id;
 
 # Ques 3 : What was the difference between the longest and shortest delivery times for all orders?
-Select Max(duration) - Min(duration) As dff_between_long_short From runner_order
-Where duration != ' ';
+<h6>Select Max(duration) - Min(duration) As dff_between_long_short From runner_order
+<h6>Where duration != ' ';
 
 # Ques 4 :What is the successful delivery percentage for each runner?
-Select runner_id, Round(100 * Sum(Case When distance = 0 Then 0 Else 1 End)/Count(*),0)AS success_perc
-From runner_order
-Group By runner_id;
+<h6>Select runner_id, Round(100 * Sum(Case When distance = 0 Then 0 Else 1 End)/Count(*),0)AS success_perc
+<h6>From runner_order
+<h6>Group By runner_id;
 
 # C. Ingredient Optimisation
 
 # Ques 1 :
 # What are the standard ingredients for each pizza?
-Select p.pizza_name, t.topping_name From pizza_names p
-Join pizza_recipes r
-On p.pizza_id = r.pizza_id
-Join pizza_toppings t
-On r.toppings = t.topping_id
-Group By p.pizza_name; 
+<h6>Select p.pizza_name, t.topping_name From pizza_names p
+<h6>Join pizza_recipes r
+<h6>On p.pizza_id = r.pizza_id
+<h6>Join pizza_toppings t
+<h6>On r.toppings = t.topping_id
+<h6>Group By p.pizza_name; 
 
 # Ques 2 : What was the most commonly added extra?
-Select extras, count(extras) From customer_order 
-Where extras != 0
-Group By extras;
+<h6>Select extras, count(extras) From customer_order 
+<h6>Where extras != 0
+<h6>Group By extras;
 
 # Ques 3 : What was the most common exclusion?
-Select exclusions, count(exclusions) From customer_order 
-Where exclusions != 0
-Group By exclusions;
+<h6>Select exclusions, count(exclusions) From customer_order 
+<h6>Where exclusions != 0
+<h6>Group By exclusions;
 
 # D. Pricing and Ratings
 
 # Ques 1 : If a Meat Lovers pizza costs $12 and Vegetarian costs $10 and there were no charges for changes - how much money has Pizza Runner made so far if there are no delivery fees?
-Select p.pizza_name, Count(c.pizza_id) As total_order,
- Case
-   when p.pizza_name = 'Meatlovers' Then 12*Count(c.pizza_id)
-   when p.pizza_name = 'Vegetarian' Then 10*Count(c.pizza_id) End as total_price
-  From customer_order c
-  Join pizza_names p
-  On c.pizza_id = p.pizza_id
-  Join runner_order r
-  On r.order_id = c.order_id
-  Where r.distance != 0
-  Group By p.pizza_name
-  Order By 2 Desc;
+<h6>Select p.pizza_name, Count(c.pizza_id) As total_order,
+ <h6>Case
+   <h6>when p.pizza_name = 'Meatlovers' Then 12*Count(c.pizza_id)
+   <h6>when p.pizza_name = 'Vegetarian' Then 10*Count(c.pizza_id) End as total_price
+  <h6>From customer_order c
+  <h6>Join pizza_names p
+  <h6>On c.pizza_id = p.pizza_id
+  <h6>Join runner_order r
+  <h6>On r.order_id = c.order_id
+  <h6>Where r.distance != 0
+  <h6>Group By p.pizza_name
+  <h6>Order By 2 Desc;
 
 # Ques 2 : What if there was an additional $1 charge for any pizza extras?
 # Add cheese is $1 extra
-Select p.pizza_name, Count(c.pizza_id) As total_order,
- Case
-   when p.pizza_name = 'Meatlovers' Then 12*Count(c.pizza_id) + 1*Count(c.pizza_id)
-   when p.pizza_name = 'Vegetarian' Then 10*Count(c.pizza_id) + 1*Count(c.pizza_id) End as total_price
-  From customer_order c
-  Join pizza_names p
-  On c.pizza_id = p.pizza_id
-  Join runner_order r
-  On r.order_id = c.order_id
-  Where r.distance != 0
-  Group By p.pizza_name
-  Order By 2 Desc;
+<h6>Select p.pizza_name, Count(c.pizza_id) As total_order,
+ <h6>Case
+   <h6>when p.pizza_name = 'Meatlovers' Then 12*Count(c.pizza_id) + 1*Count(c.pizza_id)
+  <h6> when p.pizza_name = 'Vegetarian' Then 10*Count(c.pizza_id) + 1*Count(c.pizza_id) End as total_price
+  <h6>From customer_order c
+  <h6>Join pizza_names p
+  <h6>On c.pizza_id = p.pizza_id
+  <h6>Join runner_order r
+  <h6>On r.order_id = c.order_id
+  <h6>Where r.distance != 0
+  <h6>Group By p.pizza_name
+ <h6> Order By 2 Desc;
 
              
   
