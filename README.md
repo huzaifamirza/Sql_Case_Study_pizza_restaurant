@@ -5,7 +5,7 @@
 <h3> Answering business question using SQL</h3>  
   
   
-  CREATE SCHEMA pizza_runner;
+  <p>CREATE SCHEMA pizza_runner;
 
 use pizza_runner;
 CREATE TABLE runners (
@@ -46,7 +46,7 @@ VALUES
   ('8', '102', '1', 'null', 'null', '2020-01-09 23:54:33'),
   ('9', '103', '1', '4', '1, 5', '2020-01-10 11:22:59'),
   ('10', '104', '1', 'null', 'null', '2020-01-11 18:34:49'),
-  ('10', '104', '1', '2, 6', '1, 4', '2020-01-11 18:34:49');
+  ('10', '104', '1', '2, 6', '1, 4', '2020-01-11 18:34:49');</p>
 
 
 DROP TABLE IF EXISTS runner_orders;
